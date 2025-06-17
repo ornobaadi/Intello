@@ -31,7 +31,7 @@ export function AudioVisualizer({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number | undefined>(undefined)
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Cleanup function to stop visualization and close audio context
@@ -89,6 +89,11 @@ export function AudioVisualizer({
   // Initialize audio context and start visualization
   const startVisualization = async () => {
     try {
+      if (!stream) {
+        console.error("No stream available for visualization")
+        return
+      }
+
       const audioContext = new AudioContext()
       audioContextRef.current = audioContext
 
@@ -97,7 +102,7 @@ export function AudioVisualizer({
       analyser.smoothingTimeConstant = AUDIO_CONFIG.SMOOTHING
       analyserRef.current = analyser
 
-      const source = audioContext.createMediaStreamSource(stream!)
+      const source = audioContext.createMediaStreamSource(stream)
       source.connect(analyser)
 
       draw()
@@ -136,12 +141,14 @@ export function AudioVisualizer({
 
     const canvas = canvasRef.current
     const ctx = canvas?.getContext("2d")
-    if (!canvas || !ctx || !analyserRef.current) return
+    if (!canvas || !ctx) return
 
     const dpr = window.devicePixelRatio || 1
     ctx.scale(dpr, dpr)
 
     const analyser = analyserRef.current
+    if (!analyser) return // Early return if analyser is not available
+
     const bufferLength = analyser.frequencyBinCount
     const frequencyData = new Uint8Array(bufferLength)
 
@@ -164,7 +171,8 @@ export function AudioVisualizer({
 
       // Draw each frequency bar
       for (let i = 0; i < bufferLength; i++) {
-        const normalizedHeight = frequencyData[i] / 255 // Convert to 0-1 range
+        const frequencyValue = frequencyData[i] ?? 0 // Fallback to 0 if undefined
+        const normalizedHeight = frequencyValue / 255 // Convert to 0-1 range
         const barHeight = Math.max(
           AUDIO_CONFIG.MIN_BAR_HEIGHT,
           normalizedHeight * centerY
