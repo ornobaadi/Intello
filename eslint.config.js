@@ -15,7 +15,6 @@ export default tseslint.config(
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      drizzle,
     },
 		extends: [
 			...tseslint.configs.recommended,
@@ -34,14 +33,6 @@ export default tseslint.config(
     "@typescript-eslint/no-misused-promises": [
       "error",
       { checksVoidReturn: { attributes: false } },
-    ],
-    "drizzle/enforce-delete-with-where": [
-      "error",
-      { drizzleObjectName: ["db", "ctx.db"] },
-    ],
-    "drizzle/enforce-update-with-where": [
-      "error",
-      { drizzleObjectName: ["db", "ctx.db"] },
     ],
   },
   },

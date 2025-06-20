@@ -62,7 +62,14 @@ export function MessageInput({
   } = useAudioRecording({
     transcribeAudio,
     onTranscriptionComplete: (text) => {
-      props.onChange?.({ target: { value: text } } as any)
+      if (props.onChange && textAreaRef.current) {
+        const event = Object.create(null) as React.ChangeEvent<HTMLTextAreaElement>
+        Object.defineProperty(event, "target", {
+          value: { ...textAreaRef.current, value: text },
+          writable: false,
+        })
+        props.onChange(event)
+      }
     },
   })
 
@@ -172,7 +179,7 @@ export function MessageInput({
     props.allowAttachments && props.files && props.files.length > 0
 
   useAutosizeTextArea({
-    ref: textAreaRef,
+    ref: textAreaRef as React.RefObject<HTMLTextAreaElement>,
     maxHeight: 240,
     borderWidth: 1,
     dependencies: [props.value, showFileList],

@@ -77,9 +77,10 @@ export function Chat({
     if (!setMessages) return
 
     const latestMessages = [...messagesRef.current]
-    const lastAssistantMessage = latestMessages.findLast(
-      (m) => m.role === "assistant"
-    )
+    const lastAssistantMessage = latestMessages
+      .slice()
+      .reverse()
+      .find((m) => m.role === "assistant")
 
     if (!lastAssistantMessage) return
 
