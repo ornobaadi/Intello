@@ -46,7 +46,7 @@ export function ChatDemo(props: ChatDemoProps) {
 
   return (
     <div className="w-full h-full flex">
-      <div className="w-full max-w-9xl mx-52 h-full flex flex-col">
+      <div className="w-full max-w-9xl mx-5 md:mx-52 h-full flex flex-col">
         {/* Header with model selector */}
         <div className="w-full flex items-center justify-between bg-background/50 py-6 px-8">
           <div className="min-w-0 flex-1 mr-4">
