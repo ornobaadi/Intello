@@ -168,9 +168,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   if (isUser) {
     return (
-      <div
-        className={cn("flex flex-col", isUser ? "items-end" : "items-start")}
-      >
+      <div className={cn("flex flex-col items-end py-2 w-full")}>
         {files ? (
           <div className="mb-1 flex flex-wrap gap-2">
             {files.map((file, index) => {
