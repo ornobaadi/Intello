@@ -2,10 +2,9 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
-import { AppSidebar } from "~/components/app-sidebar";
+import { AppLayoutClient } from "~/components/app-layout-client";
 import { ThemeProvider } from "~/components/theme-provider";
-import { ModeToggle } from "~/components/mode-toggle";
+import { Button } from "~/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -30,14 +29,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <AppSidebar />
-            <main>
-              <SidebarTrigger />
-              <ModeToggle />
-              {children}
-            </main>
-          </SidebarProvider>
+          <AppLayoutClient>{children}</AppLayoutClient>
         </ThemeProvider>
       </body>
     </html>
