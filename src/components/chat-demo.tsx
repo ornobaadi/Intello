@@ -50,8 +50,6 @@ export function ChatDemo(props: ChatDemoProps) {
         {/* Header with model selector */}
         <div className="w-full flex items-center justify-between bg-background/50 py-6 px-8">
           <div className="min-w-0 flex-1 mr-4">
-            <h1 className="text-2xl font-bold text-foreground truncate">Intello AI</h1>
-            <p className="text-sm text-muted-foreground mt-1 truncate">Your intelligent assistant</p>
           </div>
           <div className="flex-shrink-0">
             <Select value={selectedModel} onValueChange={setSelectedModel}>
@@ -84,7 +82,7 @@ export function ChatDemo(props: ChatDemoProps) {
               setMessages={setMessages}
               transcribeAudio={props.transcribeAudio}
               suggestions={[
-                "Who is the GOAT, Messi or Ronaldo?",
+                "Who is the GOAT in all categories, Messi or Ronaldo? No bias answer only facts.",
                 "Explain step-by-step how to solve this math problem: If x² + 6x + 9 = 25, what is x?",
                 "Design a simple algorithm to find the longest palindrome in a string.",
               ]}

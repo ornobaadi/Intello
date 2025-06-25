@@ -15,6 +15,24 @@ export function AppLayoutClient({ children }: { children: ReactNode }) {
   const isLoginPage = pathname === "/login";
   const [user, setUser] = useState<any>(null);
 
+  // Sidebar open state persisted in localStorage
+  const [sidebarOpen, setSidebarOpen] = useState<boolean | undefined>(undefined);
+
+  // Load sidebar state from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("sidebar-open");
+      setSidebarOpen(stored === null ? true : stored === "true");
+    }
+  }, []);
+
+  // Persist sidebar state to localStorage
+  useEffect(() => {
+    if (sidebarOpen !== undefined) {
+      localStorage.setItem("sidebar-open", sidebarOpen.toString());
+    }
+  }, [sidebarOpen]);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
@@ -35,17 +53,23 @@ export function AppLayoutClient({ children }: { children: ReactNode }) {
     window.location.href = "/login";
   };
 
+  // Wait for sidebarOpen to be loaded before rendering
+  if (sidebarOpen === undefined) return null;
+
   return isLoginPage ? (
     <main className="min-h-screen flex items-center justify-center bg-background">
       {children}
     </main>
   ) : (
-    <SidebarProvider>
+    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
       <AppSidebar />
       <div className="flex flex-col min-h-screen w-full">
         {/* Top right controls */}
         <header className="flex justify-between items-center gap-2 p-4 border-b">
-          <SidebarTrigger className="p-5" />
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <h1 className="text-2xl font-bold text-foreground truncate">Intello AI</h1>
+          </div>
           <div className="flex items-center gap-2">
             <ModeToggle />
             {user ? (

@@ -204,7 +204,7 @@ export function MessageInput({
         onStopRecording={stopRecording}
       />
 
-      <div className="relative flex w-full items-center space-x-2">
+      <div className="relative flex w-full items-center space-x-2 mb-5">
         <div className="relative flex-1">
           <textarea
             aria-label="Write your prompt here"
